@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>DRAFTIN Y'ALL</title>
+</head>
+<body>
+<h1>Add cards to the cube</h1>
+<form action="#" th:action="@{/create}" method="post">
+    <h2>Cards:</h2>
+    <textarea cols="30" rows="30" name="cards" type="text"></textarea>
+    <p><input type="submit" value="Submit" /></p>
+</form>
+
+<h1>Current Cube:</h1>
+<ul th:each="card: ${cubeCards}">
+    <li th:text="${card}" />
+</ul>
+
+</body>
+</html>
+
+
+<!--<tr th:each="data, iterstat: ${mois}">-->
+    <!--<td th:text="${data}" th:id="|td${iterstat.index}|"></td>-->
+<!--</tr>-->
