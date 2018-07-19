@@ -1,0 +1,66 @@
+resources:
+- name: cube-untap
+  type: git
+  source:
+    uri: git@github.com:seattle-beach/cube-untap.git
+    branch: master
+    private_key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      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
+      -----END RSA PRIVATE KEY-----
+
+jobs:
+- name: test
+  plan:
+    - get: cube-untap
+      trigger: true
+    - task: test
+      file: cube-untap/ci/tasks/test.yml
