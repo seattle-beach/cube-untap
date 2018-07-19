@@ -10,4 +10,4 @@ inputs:
 - name: cube-untap
 
 run:
-  path:  cube-untap/ci/task/test.sh
+  path: ./cube-untap/ci/tasks/test.sh
