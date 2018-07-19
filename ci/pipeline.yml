@@ -1,4 +1,12 @@
 resources:
+- name: deploy-cube-untap
+  type: cf
+  source:
+    api: https://api.run.pivotal.io
+    username: EMAIL
+    password: PASSWORD
+    organization: ORG
+    space: SPACE
 - name: cube-untap
   type: git
   source:
