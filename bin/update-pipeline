@@ -1,0 +1,3 @@
+#!/bin/bash
+
+fly -t concourse sp -c ci/pipeline.yml -p cube-untap -l ci/secrets/secrets.yml

@@ -9,5 +9,8 @@ image_resource:
 inputs:
 - name: cube-untap
 
+outputs:
+- name: compiledApp
+
 run:
   path: ./cube-untap/ci/tasks/test.sh
