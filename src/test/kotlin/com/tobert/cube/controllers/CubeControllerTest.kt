@@ -1,9 +1,8 @@
 package com.tobert.cube.controllers
 
 import com.tobert.cube.models.Card
-import com.tobert.cube.repositories.CardRepository
+import com.tobert.cube.services.CardService
 import org.hamcrest.core.IsEqual
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
@@ -24,11 +23,7 @@ class CubeControllerTest {
     lateinit var mvc: MockMvc
 
     @MockBean
-    lateinit var mockCardRepository: CardRepository
-
-    @Before
-    fun setUp() {
-    }
+    lateinit var mockCardService: CardService
 
     @Test
     fun `it gets the cube from the repository`() {
@@ -38,23 +33,22 @@ class CubeControllerTest {
                         model().attribute("cubeCards", IsEqual(listOf<String>()))
                 )
 
-        verify(mockCardRepository).findAll()
+        verify(mockCardService).getAll()
     }
 
     @Test
     fun `it can create cubes`() {
         mvc.perform(
-                MockMvcRequestBuilders.post("/create")
+                MockMvcRequestBuilders.post("/createCube")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("cards", "JuJu Bubble\rRecurring Nightmare")
         ).andExpect(
                 status().is3xxRedirection
         )
 
-        val expectedCards = listOf(Card(name = "JuJu Bubble"), Card(name = "Recurring Nightmare"))
+        val expectedCards = listOf("JuJu Bubble", "Recurring Nightmare")
 
-        verify(mockCardRepository).deleteAll()
-        verify(mockCardRepository).saveAll(expectedCards)
+        verify(mockCardService).createCube(expectedCards)
     }
 }
 

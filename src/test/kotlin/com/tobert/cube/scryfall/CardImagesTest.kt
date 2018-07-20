@@ -1,0 +1,25 @@
+package com.tobert.cube.scryfall
+
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.readValue
+import org.junit.Assert.assertEquals
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
+
+@RunWith(MockitoJUnitRunner::class)
+class CardsResponseTest {
+    @Test
+    fun testobjmap() {
+        val kotlinMapper = ObjectMapper()
+        kotlinMapper.registerModule(KotlinModule())
+        kotlinMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+
+        val cardResponse = kotlinMapper.readValue<CardsResponse>("{\n  \"object\": \"card\",\n  \"id\": \"b56b9131-4f7e-4912-ba47-63ed82f21d1b\",\n  \"oracle_id\": \"4b7ac066-e5c7-43e6-9e7e-2739b24a905d\",\n  \"multiverse_ids\": [\n    442921\n  ],\n  \"mtgo_id\": 67531,\n  \"arena_id\": 67170,\n  \"name\": \"Serra Angel\",\n  \"lang\": \"en\",\n  \"uri\": \"https://api.scryfall.com/cards/dom/33\",\n  \"scryfall_uri\": \"https://scryfall.com/card/dom/33?utm_source=api\",\n  \"layout\": \"normal\",\n  \"highres_image\": true,\n  \"image_uris\": {\n    \"small\": \"https://img.scryfall.com/cards/small/en/dom/33.jpg?1524790314\",\n    \"normal\": \"https://img.scryfall.com/cards/normal/en/dom/33.jpg?1524790314\",\n    \"large\": \"https://img.scryfall.com/cards/large/en/dom/33.jpg?1524790314\",\n    \"png\": \"https://img.scryfall.com/cards/png/en/dom/33.png?1524790314\",\n    \"art_crop\": \"https://img.scryfall.com/cards/art_crop/en/dom/33.jpg?1524790314\",\n    \"border_crop\": \"https://img.scryfall.com/cards/border_crop/en/dom/33.jpg?1524790314\"\n  },\n  \"mana_cost\": \"{3}{W}{W}\",\n  \"cmc\": 5,\n  \"type_line\": \"Creature — Angel\",\n  \"oracle_text\": \"Flying, vigilance\",\n  \"power\": \"4\",\n  \"toughness\": \"4\",\n  \"colors\": [\n    \"W\"\n  ],\n  \"color_identity\": [\n    \"W\"\n  ],\n  \"legalities\": {\n    \"standard\": \"legal\",\n    \"future\": \"legal\",\n    \"frontier\": \"legal\",\n    \"modern\": \"legal\",\n    \"legacy\": \"legal\",\n    \"pauper\": \"not_legal\",\n    \"vintage\": \"legal\",\n    \"penny\": \"legal\",\n    \"commander\": \"legal\",\n    \"1v1\": \"legal\",\n    \"duel\": \"legal\",\n    \"brawl\": \"legal\"\n  },\n  \"reserved\": false,\n  \"foil\": true,\n  \"nonfoil\": true,\n  \"oversized\": false,\n  \"reprint\": true,\n  \"set\": \"dom\",\n  \"set_name\": \"Dominaria\",\n  \"set_uri\": \"https://api.scryfall.com/sets/dom\",\n  \"set_search_uri\": \"https://api.scryfall.com/cards/search?order=set&q=e%3Adom&unique=prints\",\n  \"scryfall_set_uri\": \"https://scryfall.com/sets/dom?utm_source=api\",\n  \"rulings_uri\": \"https://api.scryfall.com/cards/dom/33/rulings\",\n  \"prints_search_uri\": \"https://api.scryfall.com/cards/search?order=set&q=%21%E2%80%9CSerra+Angel%E2%80%9D&unique=prints\",\n  \"collector_number\": \"33\",\n  \"digital\": false,\n  \"rarity\": \"uncommon\",\n  \"flavor_text\": \"The angel remembers her past lives like dreams. Her song held up meadows. Her blade drove back darkness. Her wings carried her across the ages.\",\n  \"illustration_id\": \"7aa16de3-4ff9-4ed9-9d62-62c140599508\",\n  \"artist\": \"Donato Giancola\",\n  \"frame\": \"2015\",\n  \"full_art\": false,\n  \"border_color\": \"black\",\n  \"timeshifted\": false,\n  \"colorshifted\": false,\n  \"futureshifted\": false,\n  \"edhrec_rank\": 4122,\n  \"usd\": \"0.03\",\n  \"tix\": \"0.01\",\n  \"eur\": \"0.05\",\n  \"related_uris\": {\n    \"gatherer\": \"http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=442921\",\n    \"tcgplayer_decks\": \"http://decks.tcgplayer.com/magic/deck/search?contains=Serra+Angel&page=1&partner=Scryfall\",\n    \"edhrec\": \"http://edhrec.com/route/?cc=Serra+Angel\",\n    \"mtgtop8\": \"http://mtgtop8.com/search?MD_check=1&SB_check=1&cards=Serra+Angel\"\n  },\n  \"purchase_uris\": {\n    \"amazon\": \"https://www.amazon.com/gp/search?ie=UTF8&index=toys-and-games&keywords=Serra+Angel&tag=scryfall-20\",\n    \"ebay\": \"http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Serra+Angel&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001\",\n    \"tcgplayer\": \"https://scryfall.com/s/tcgplayer/164227\",\n    \"magiccardmarket\": \"https://scryfall.com/s/mcm/327171\",\n    \"cardhoarder\": \"https://www.cardhoarder.com/cards/67531?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall\",\n    \"card_kingdom\": \"https://www.cardkingdom.com/catalog/item/217752?partner=scryfall&utm_campaign=affiliate&utm_medium=scryfall&utm_source=scryfall\",\n    \"mtgo_traders\": \"http://www.mtgotraders.com/deck/ref.php?id=67531&referral=scryfall\",\n    \"coolstuffinc\": \"https://scryfall.com/s/coolstuffinc/4367964\"\n  }\n}")
+        assertEquals("https://img.scryfall.com/cards/large/en/dom/33.jpg?1524790314", cardResponse.image_uris.large)
+    }
+}
+
+

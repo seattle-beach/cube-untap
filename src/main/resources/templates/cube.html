@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Add cards to the cube</h1>
-<form action="#" th:action="@{/create}" method="post">
+<form action="#" th:action="@{/createCube}" method="post">
     <h2>Cards:</h2>
     <textarea cols="30" rows="30" name="cards" type="text"></textarea>
     <p><input type="submit" value="Submit" /></p>
@@ -19,8 +19,3 @@
 
 </body>
 </html>
-
-
-<!--<tr th:each="data, iterstat: ${mois}">-->
-    <!--<td th:text="${data}" th:id="|td${iterstat.index}|"></td>-->
-<!--</tr>-->

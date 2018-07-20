@@ -11,5 +11,14 @@ data class Card(
         val id: Int? = null,
 
         @Column(nullable = false)
-        val name: String
+        val name: String,
+
+        @Column(nullable = true)
+        val smallImg: String? = null,
+
+        @Column(nullable = true)
+        val normalImg: String? = null,
+
+        @Column(nullable = true)
+        val borderCropImg: String? = null
 )
