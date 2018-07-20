@@ -5,4 +5,6 @@ applications:
   host: cube-untap
   buildpack: java_buildpack
   path: build/libs/cube-0.0.1-SNAPSHOT.jar
+  env:
+    DDL-AUTO: update
 
