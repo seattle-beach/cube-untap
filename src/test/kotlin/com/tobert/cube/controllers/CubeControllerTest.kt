@@ -1,6 +1,5 @@
 package com.tobert.cube.controllers
 
-import com.tobert.cube.models.Card
 import com.tobert.cube.services.CardService
 import org.hamcrest.core.IsEqual
 import org.junit.Test
@@ -46,9 +45,18 @@ class CubeControllerTest {
                 status().is3xxRedirection
         )
 
-        val expectedCards = listOf("JuJu Bubble", "Recurring Nightmare")
+        verify(mockCardService).createCube(listOf("JuJu Bubble", "Recurring Nightmare"))
+    }
 
-        verify(mockCardService).createCube(expectedCards)
+    @Test
+    fun `it filters blank lines`() {
+        mvc.perform(
+                MockMvcRequestBuilders.post("/createCube")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("cards", "JuJu Bubble\r\r")
+        )
+
+        verify(mockCardService).createCube(listOf("JuJu Bubble"))
     }
 }
 

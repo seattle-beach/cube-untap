@@ -25,7 +25,7 @@ class CubeController {
 
     @PostMapping("/createCube")
     fun create(@ModelAttribute("cards") cardList:String): RedirectView {
-        val cubeCards = cardList.split("\r")
+        val cubeCards = cardList.lines().filter { s -> s != "" }
         cardService.createCube(cubeCards)
         return RedirectView("/")
     }

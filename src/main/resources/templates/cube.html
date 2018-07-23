@@ -14,7 +14,9 @@
 
 <h1>Current Cube:</h1>
 <ul th:each="card: ${cubeCards}">
-    <li th:text="${card.name}" />
+    <li>
+        <a th:text="${card.name}" th:href="${card.borderCropImg}" th:target="_blank" />
+    </li>
 </ul>
 
 </body>
