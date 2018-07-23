@@ -1,5 +1,6 @@
 package com.tobert.cube.scryfall
 
+import com.tobert.cube.helpers.DummyCardResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,26 +18,10 @@ class ScryfallClientTest {
     @InjectMocks
     lateinit var subject: ScryfallClient
 
-    var imageURIs = CardImages(
-            small = "small",
-            normal = "normal",
-            large = "large",
-            png = "png",
-            art_crop = "art_crop",
-            border_crop = "border_crop"
-    )
-
     @Test
     fun `getCards retrieves card data for card by name`() {
-        val manaDork = CardsResponse(
-                name = "Mana Dork",
-                image_uris = imageURIs
-        )
-
-        val blackLotus = CardsResponse(
-                name = "Black Lotus",
-                image_uris = imageURIs
-        )
+        val manaDork = DummyCardResponse(name = "Mana Dork")
+        val blackLotus = DummyCardResponse(name = "Black Lotus")
 
         `when`(mockRestTemplate.getForObject("https://api.scryfall.com/cards/named?exact={cardName}",
                 CardsResponse::class.java,

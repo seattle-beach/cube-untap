@@ -1,9 +1,9 @@
 package com.tobert.cube.services
 
+import com.tobert.cube.helpers.DummyCardResponse
+import com.tobert.cube.helpers.DummyImages
 import com.tobert.cube.models.Card
 import com.tobert.cube.repositories.CardRepository
-import com.tobert.cube.scryfall.CardImages
-import com.tobert.cube.scryfall.CardsResponse
 import com.tobert.cube.scryfall.ScryfallClient
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -25,15 +25,6 @@ class CardServiceClientTest {
     @InjectMocks
     lateinit var subject: CardServiceClient
 
-    var imageURIs = CardImages(
-            small = "small",
-            normal = "normal",
-            large = "large",
-            png = "png",
-            art_crop = "art_crop",
-            border_crop = "border_crop"
-    )
-
     @Test
     fun `it deletes the cards before creating`() {
         val cards = listOf("JuJu Bubble", "Recurring Nightmare")
@@ -43,10 +34,17 @@ class CardServiceClientTest {
 
     @Test
     fun `it gets the card images when creating a cube`() {
+        val images = DummyImages(small = "small", normal = "normal", border_crop = "border_crop")
         val cards = listOf("JuJu Bubble", "Recurring Nightmare")
         val cardResponse = listOf(
-                CardsResponse(name = "JuJu Bubble", image_uris = imageURIs),
-                CardsResponse(name = "Recurring Nightmare", image_uris = imageURIs)
+                DummyCardResponse(
+                        name = "JuJu Bubble",
+                        card_faces = listOf(DummyCardResponse(image_uris = images))
+                ),
+                DummyCardResponse(
+                        name = "Recurring Nightmare",
+                        card_faces = listOf(DummyCardResponse(image_uris = images))
+                )
         )
         `when`(scryfallClient.getCards(cards)).thenReturn(cardResponse)
 

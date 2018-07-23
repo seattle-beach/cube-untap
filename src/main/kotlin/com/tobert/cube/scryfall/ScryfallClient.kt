@@ -10,7 +10,7 @@ class ScryfallClient(val restTemplate: RestTemplate){
 
     fun getCards(cardNames: List<String>): List<CardsResponse> {
         return cardNames.mapNotNull {
-            TimeUnit.MILLISECONDS.sleep(50) // scryfall doesn't want to get pinged to crap
+            TimeUnit.MILLISECONDS.sleep(50)// scryfall doesn't want to get pinged to crap
             restTemplate.getForObject(
                     templateURL,
                     CardsResponse::class.java,

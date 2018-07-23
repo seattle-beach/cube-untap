@@ -5,7 +5,6 @@ import javax.persistence.*
 @Entity
 @Table(name = "Cards")
 data class Card(
-
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Int? = null,

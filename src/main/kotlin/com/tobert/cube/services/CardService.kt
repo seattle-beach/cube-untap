@@ -23,9 +23,9 @@ class CardServiceClient(
                 scryfallClient.getCards(cards).map {
                     Card(
                             name = it.name,
-                            smallImg = it.image_uris.small,
-                            normalImg = it.image_uris.normal,
-                            borderCropImg = it.image_uris.border_crop
+                            smallImg = it.images().small,
+                            normalImg = it.images().normal,
+                            borderCropImg = it.images().border_crop
                     )
                 }
         )
