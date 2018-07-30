@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @RunWith(SpringRunner::class)
 @WebMvcTest(controllers = [PackController::class])
-class CubeControllerTest {
+class PackControllerTest {
     @Autowired
     lateinit var mvc: MockMvc
 

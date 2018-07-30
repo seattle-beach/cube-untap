@@ -5,19 +5,22 @@
     <title>DRAFTIN Y'ALL</title>
 </head>
 <body>
-<h1>Add cards to the cube</h1>
+<h2>Users waiting to draft:</h2>
+<ul>
+    <li>asd</li>
+</ul>
+<h2>Add cards to the cube</h2>
 <form action="#" th:action="@{/createCube}" method="post">
     <h2>Cards:</h2>
     <textarea cols="30" rows="30" name="cards" type="text"></textarea>
     <p><input type="submit" value="Submit" /></p>
 </form>
 
-<h1>Current Cube:</h1>
+<h2>Current Cube:</h2>
 <ul th:each="card: ${cubeCards}">
     <li>
         <a th:text="${card.name}" th:href="${card.borderCropImg}" th:target="_blank" />
     </li>
 </ul>
-
 </body>
 </html>
