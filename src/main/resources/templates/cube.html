@@ -6,8 +6,8 @@
 </head>
 <body>
 <h2>Users waiting to draft:</h2>
-<ul>
-    <li>asd</li>
+<ul th:each="drafter: ${drafters}">
+    <li th:text="${drafter.name}"/>
 </ul>
 <h2>Add cards to the cube</h2>
 <form action="#" th:action="@{/createCube}" method="post">

@@ -1,6 +1,6 @@
 package com.tobert.cube.controllers
 
-import com.tobert.cube.models.Card
+import com.tobert.cube.repositories.DrafterRepository
 import com.tobert.cube.services.CardService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -15,10 +15,14 @@ class CubeController {
     @Autowired
     lateinit var cardService: CardService
 
+    @Autowired
+    lateinit var drafterRepository: DrafterRepository
+
     @GetMapping("/")
     fun cube(): ModelAndView {
         val cube = ModelAndView("cube")
         cube.model["cubeCards"] = cardService.getAll()
+        cube.model["drafters"] = drafterRepository.findAll()
 
         return cube
     }

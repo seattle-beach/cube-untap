@@ -1,5 +1,9 @@
 package com.tobert.cube.controllers
 
+import com.nhaarman.mockito_kotlin.whenever
+import com.tobert.cube.helpers.DummyCard
+import com.tobert.cube.helpers.DummyDrafter
+import com.tobert.cube.repositories.DrafterRepository
 import com.tobert.cube.services.CardService
 import org.hamcrest.core.IsEqual
 import org.junit.Test
@@ -24,15 +28,22 @@ class CubeControllerTest {
     @MockBean
     lateinit var mockCardService: CardService
 
+    @MockBean
+    lateinit var drafterRepository: DrafterRepository
+
     @Test
     fun `it gets the cube from the repository`() {
+        whenever(mockCardService.getAll()).thenReturn(listOf(DummyCard()))
+        whenever(drafterRepository.findAll()).thenReturn(listOf(DummyDrafter()))
+
         mvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(status().is2xxSuccessful)
                 .andExpect(
-                        model().attribute("cubeCards", IsEqual(listOf<String>()))
+                        model().attribute("cubeCards", IsEqual(listOf(DummyCard())))
                 )
-
-        verify(mockCardService).getAll()
+                .andExpect(
+                        model().attribute("drafters", IsEqual(listOf(DummyDrafter())))
+                )
     }
 
     @Test
