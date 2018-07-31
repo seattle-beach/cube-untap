@@ -4,11 +4,7 @@ import com.tobert.cube.models.Drafter
 import com.tobert.cube.repositories.DrafterRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class DrafterController {
@@ -17,8 +13,10 @@ class DrafterController {
 
     @PostMapping("/drafter/create")
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@ModelAttribute("drafter") drafter: String) {
-        drafterRepository.save(Drafter(name = drafter))
+    fun create(@RequestBody drafterRequest: DrafterRequest ) {
+        drafterRepository.save(Drafter(name = drafterRequest.drafter))
     }
 }
+
+data class DrafterRequest (val drafter: String)
 

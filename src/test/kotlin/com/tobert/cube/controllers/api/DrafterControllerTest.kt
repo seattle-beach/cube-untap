@@ -28,7 +28,7 @@ class DrafterControllerTest {
         mvc.perform(
                 MockMvcRequestBuilders.post("/drafter/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .param("drafter", "Toby")
+                        .content("{\n  \"drafter\": \"Toby\"\n}")
         ).andExpect(
                 MockMvcResultMatchers.status().isCreated
         )
