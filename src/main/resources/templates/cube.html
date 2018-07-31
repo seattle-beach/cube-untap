@@ -6,8 +6,8 @@
 </head>
 <body>
 <h2>Users waiting to draft:</h2>
-<ul th:each="drafter: ${drafters}">
-    <li th:text="${drafter.name}"/>
+<ul data-cy="drafter-list">
+    <li th:each="drafter: ${drafters}" th:text="${drafter.name}"/>
 </ul>
 <h2>Add cards to the cube</h2>
 <form action="#" th:action="@{/createCube}" method="post">
@@ -17,8 +17,8 @@
 </form>
 
 <h2>Current Cube:</h2>
-<ul th:each="card: ${cubeCards}">
-    <li>
+<ul>
+    <li th:each="card: ${cubeCards}">
         <a th:text="${card.name}" th:href="${card.borderCropImg}" th:target="_blank" />
     </li>
 </ul>

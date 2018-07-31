@@ -14,7 +14,9 @@ class DrafterController {
     @PostMapping("/drafter/create")
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody drafterRequest: DrafterRequest ) {
-        drafterRepository.save(Drafter(name = drafterRequest.drafter))
+        if (drafterRepository.findByName(drafterRequest.drafter) == null) {
+            drafterRepository.save(Drafter(name = drafterRequest.drafter))
+        }
     }
 }
 
