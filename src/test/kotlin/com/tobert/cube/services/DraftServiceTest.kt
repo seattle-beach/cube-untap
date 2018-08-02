@@ -5,10 +5,9 @@ import com.nhaarman.mockito_kotlin.whenever
 import com.tobert.cube.helpers.DummyCard
 import com.tobert.cube.helpers.DummyDrafter
 import com.tobert.cube.models.Draft
-import com.tobert.cube.models.DrafterCard
+import com.tobert.cube.models.Drafter
 import com.tobert.cube.repositories.DraftRepository
 import com.tobert.cube.repositories.DrafterRepository
-import com.tobert.cube.repositories.DrafterCardRepository
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -25,9 +24,6 @@ class DraftServiceTest {
 
     @Mock
     lateinit var drafterRepository: DrafterRepository
-
-    @Mock
-    lateinit var drafterCardRepository: DrafterCardRepository
 
     @InjectMocks
     lateinit var subject: DraftService
@@ -53,9 +49,7 @@ class DraftServiceTest {
 
         subject.startDraft(2)
 
-        verify(drafterCardRepository).save(DrafterCard(card = firstCard, drafter = firstDrafter))
-        verify(drafterCardRepository).save(DrafterCard(card = secondCard, drafter = firstDrafter))
-        verify(drafterCardRepository).save(DrafterCard(card = thirdCard, drafter = secondDrafter))
-        verify(drafterCardRepository).save(DrafterCard(card = fourthCard, drafter = secondDrafter))
+        verify(drafterRepository).save(Drafter(cards = listOf(firstCard, secondCard), name = "Toby"))
+        verify(drafterRepository).save(Drafter(cards = listOf(thirdCard, fourthCard), name = "Omeed"))
     }
 }

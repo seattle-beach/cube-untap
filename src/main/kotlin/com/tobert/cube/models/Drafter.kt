@@ -13,7 +13,5 @@ data class Drafter(
         val name: String,
 
         @OneToMany(fetch = FetchType.EAGER)
-        @JoinTable(name="DraftersCards",
-                joinColumns=[JoinColumn(name = "drafter", referencedColumnName="id")])
-        val cards: List<Card> = emptyList()
+        var cards: List<Card> = emptyList()
 )
