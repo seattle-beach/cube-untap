@@ -10,5 +10,8 @@ data class Drafter(
         val id: Int? = null,
 
         @Column(nullable = false, unique=true)
-        val name: String
+        val name: String,
+
+        @OneToMany(mappedBy = "drafter")
+        val drafterCards: List<DrafterCard> = emptyList()
 )

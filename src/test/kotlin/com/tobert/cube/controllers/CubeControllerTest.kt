@@ -2,13 +2,15 @@ package com.tobert.cube.controllers
 
 import com.nhaarman.mockito_kotlin.whenever
 import com.tobert.cube.helpers.DummyCard
+import com.tobert.cube.helpers.DummyDraft
 import com.tobert.cube.helpers.DummyDrafter
+import com.tobert.cube.repositories.DraftRepository
 import com.tobert.cube.repositories.DrafterRepository
 import com.tobert.cube.services.CardService
 import org.hamcrest.core.IsEqual
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.*
+import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -31,18 +33,25 @@ class CubeControllerTest {
     @MockBean
     lateinit var drafterRepository: DrafterRepository
 
+    @MockBean
+    lateinit var draftRepository: DraftRepository
+
     @Test
     fun `it gets the cube from the repository`() {
-        whenever(mockCardService.getAll()).thenReturn(listOf(DummyCard()))
-        whenever(drafterRepository.findAll()).thenReturn(listOf(DummyDrafter()))
+        whenever(mockCardService.getAll()).thenReturn(listOf(DummyCard("")))
+        whenever(drafterRepository.findAll()).thenReturn(listOf(DummyDrafter("")))
+        whenever(draftRepository.findAll()).thenReturn(listOf(DummyDraft()))
 
         mvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(status().is2xxSuccessful)
                 .andExpect(
-                        model().attribute("cubeCards", IsEqual(listOf(DummyCard())))
+                        model().attribute("cubeCards", IsEqual(listOf(DummyCard(""))))
                 )
                 .andExpect(
-                        model().attribute("drafters", IsEqual(listOf(DummyDrafter())))
+                        model().attribute("drafters", IsEqual(listOf(DummyDrafter(""))))
+                )
+                .andExpect(
+                        model().attribute("draft", IsEqual(listOf(DummyDraft())))
                 )
     }
 

@@ -5,10 +5,17 @@
     <title>DRAFTIN Y'ALL</title>
 </head>
 <body>
-<h2>Users waiting to draft:</h2>
+
+<div th:switch="${draft.size()}">
+    <h2 th:case="0">Users waiting to draft:</h2>
+    <h2 th:case="*">Users drafting:</h2>
+</div>
 <ul data-cy="drafter-list">
     <li th:each="drafter: ${drafters}" th:text="${drafter.name}"/>
 </ul>
+<form action="#" th:action="@{/draft/start}" method="post">
+    <input data-cy="draft-start-button" type="submit" value="Start Draft">
+</form>
 <h2>Add cards to the cube</h2>
 <form action="#" th:action="@{/createCube}" method="post">
     <h2>Cards:</h2>

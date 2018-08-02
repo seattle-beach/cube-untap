@@ -1,5 +1,7 @@
 package com.tobert.cube.services
 
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.spy
 import com.tobert.cube.helpers.DummyCardResponse
 import com.tobert.cube.helpers.DummyImages
 import com.tobert.cube.models.Card
@@ -10,9 +12,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
+import com.nhaarman.mockito_kotlin.whenever
+import com.tobert.cube.helpers.DummyCard
+import org.mockito.Mockito
+import org.mockito.Mockito.*
 
 @RunWith(MockitoJUnitRunner::class)
 class CardServiceClientTest {
@@ -46,7 +50,7 @@ class CardServiceClientTest {
                         card_faces = listOf(DummyCardResponse(image_uris = images))
                 )
         )
-        `when`(scryfallClient.getCards(cards)).thenReturn(cardResponse)
+        whenever(scryfallClient.getCards(cards)).thenReturn(cardResponse)
 
         subject.createCube(cards)
 
@@ -59,7 +63,7 @@ class CardServiceClientTest {
     @Test
     fun `it can get the cards from a cube`() {
         val cards = listOf(Card(name = "JuJu Bubble"), Card(name = "Recurring Nightmare"))
-        `when`(cardRepository.findAll()).thenReturn(cards)
+        whenever(cardRepository.findAll()).thenReturn(cards)
         assertThat(subject.getAll()).isEqualTo(cards)
     }
 }

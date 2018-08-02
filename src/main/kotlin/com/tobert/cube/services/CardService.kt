@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service
 interface CardService {
     fun createCube(cards: List<String>)
     fun getAll(): List<Card>
+    fun getAllShuffled(): List<Card>
 }
 
 @Service
@@ -33,6 +34,10 @@ class CardServiceClient(
 
     override fun getAll(): List<Card> {
         return cardRepository.findAll()
+    }
+
+    override fun getAllShuffled(): List<Card> {
+        return getAll().shuffled()
     }
 }
 
