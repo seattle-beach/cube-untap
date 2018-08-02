@@ -12,6 +12,6 @@ data class Drafter(
         @Column(nullable = false, unique=true)
         val name: String,
 
-        @OneToMany(mappedBy = "drafter")
-        val drafterCards: List<DrafterCard> = emptyList()
+        @OneToMany(fetch = FetchType.EAGER)
+        val cards: List<Card> = emptyList()
 )

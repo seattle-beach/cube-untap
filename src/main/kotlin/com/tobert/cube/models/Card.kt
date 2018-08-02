@@ -19,8 +19,5 @@ data class Card(
         val normalImg: String? = null,
 
         @Column(nullable = true)
-        val borderCropImg: String? = null,
-
-        @OneToMany(mappedBy = "card")
-        val drafterCards: List<DrafterCard> = emptyList()
+        val borderCropImg: String? = null
 )

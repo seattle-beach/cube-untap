@@ -1,7 +1,10 @@
 package com.tobert.cube.controllers.api
 
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.whenever
+import com.tobert.cube.helpers.DummyDrafter
 import com.tobert.cube.models.Card
-import com.tobert.cube.repositories.CardRepository
+import com.tobert.cube.repositories.DrafterRepository
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
@@ -22,19 +25,39 @@ class PackControllerTest {
     lateinit var mvc: MockMvc
 
     @MockBean
-    lateinit var cardRepository: CardRepository
+    lateinit var drafterRepository: DrafterRepository
 
     @Test
-    fun `it gets the pack`() {
+    fun `it gets the pack for the drafter`() {
         val cards = listOf(Card(name = "Black Lotus", borderCropImg = "card-image.png"))
-        `when`(cardRepository.findAll(PageRequest.of(0, 15)))
-                .thenReturn(PageImpl(cards))
+        val drafter = DummyDrafter(cards = cards)
 
-        mvc.perform(MockMvcRequestBuilders.get("/pack"))
+        whenever(drafterRepository.findByName("Toby")).thenReturn(drafter)
+
+        mvc.perform(MockMvcRequestBuilders.get("/pack/Toby"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
                 .andExpect(
                         MockMvcResultMatchers.content().json("[\n  {\n    \"name\": \"Black Lotus\",\n    \"image\": \"card-image.png\"\n  }\n]\n")
                 )
     }
 
+    @Test
+    fun `returns an empty array when the drafter does not have cards`() {
+        whenever(drafterRepository.findByName(any())).thenReturn(DummyDrafter())
+
+        mvc.perform(MockMvcRequestBuilders.get("/pack/Toby"))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+                .andExpect(
+                        MockMvcResultMatchers.content().json("[]")
+                )
+    }
+
+
+    @Test
+    fun `returns an error when the drafter is not found`() {
+        whenever(drafterRepository.findByName(any())).thenReturn(null)
+
+        mvc.perform(MockMvcRequestBuilders.get("/pack/Toby"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound)
+    }
 }

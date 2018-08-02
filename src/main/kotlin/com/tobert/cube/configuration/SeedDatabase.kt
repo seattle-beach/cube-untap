@@ -3,7 +3,6 @@ package com.tobert.cube.configuration
 import com.tobert.cube.services.CardService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Profile
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
 

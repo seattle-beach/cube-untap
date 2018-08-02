@@ -1,9 +1,11 @@
 package com.tobert.cube.helpers
 
+import com.tobert.cube.models.Card
 import com.tobert.cube.models.Drafter
 
-fun DummyDrafter(name: String = ""): Drafter {
+fun DummyDrafter(name: String = "", cards: List<Card> = emptyList()): Drafter {
     return Drafter(
-            name = name
+            name = name,
+            cards = cards
     )
 }
