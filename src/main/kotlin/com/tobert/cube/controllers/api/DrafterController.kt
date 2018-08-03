@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class DrafterController {
+class DrafterController: BaseController() {
     @Autowired
     lateinit var drafterRepository: DrafterRepository
 

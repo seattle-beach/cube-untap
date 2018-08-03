@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class PackController {
+class PackController: BaseController() {
 
     @Autowired
     lateinit var drafterRepository: DrafterRepository
