@@ -34,7 +34,7 @@ class PackControllerTest {
 
         whenever(drafterRepository.findByName("Toby")).thenReturn(drafter)
 
-        mvc.perform(MockMvcRequestBuilders.get("/pack/Toby"))
+        mvc.perform(MockMvcRequestBuilders.get("/api/pack/Toby"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
                 .andExpect(
                         MockMvcResultMatchers.content().json("[\n  {\n    \"name\": \"Black Lotus\",\n    \"image\": \"card-image.png\"\n  }\n]\n")
@@ -45,7 +45,7 @@ class PackControllerTest {
     fun `returns an empty array when the drafter does not have cards`() {
         whenever(drafterRepository.findByName(any())).thenReturn(DummyDrafter())
 
-        mvc.perform(MockMvcRequestBuilders.get("/pack/Toby"))
+        mvc.perform(MockMvcRequestBuilders.get("/api/pack/Toby"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
                 .andExpect(
                         MockMvcResultMatchers.content().json("[]")
@@ -57,7 +57,7 @@ class PackControllerTest {
     fun `returns an error when the drafter is not found`() {
         whenever(drafterRepository.findByName(any())).thenReturn(null)
 
-        mvc.perform(MockMvcRequestBuilders.get("/pack/Toby"))
+        mvc.perform(MockMvcRequestBuilders.get("/api/pack/Toby"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 }

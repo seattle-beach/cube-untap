@@ -31,7 +31,7 @@ class DrafterControllerTest {
         whenever(mockDrafterRepository.findByName("Toby")).thenReturn(null)
 
         mvc.perform(
-                MockMvcRequestBuilders.post("/drafter/create")
+                MockMvcRequestBuilders.post("/api/drafter/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n  \"drafter\": \"Toby\"\n}")
         ).andExpect(
@@ -46,7 +46,7 @@ class DrafterControllerTest {
         whenever(mockDrafterRepository.findByName("Toby")).thenReturn(DummyDrafter())
 
         mvc.perform(
-                MockMvcRequestBuilders.post("/drafter/create")
+                MockMvcRequestBuilders.post("/api/drafter/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n  \"drafter\": \"Toby\"\n}")
         ).andExpect(
