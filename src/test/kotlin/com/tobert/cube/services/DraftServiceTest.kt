@@ -7,7 +7,6 @@ import com.tobert.cube.helpers.DummyDrafter
 import com.tobert.cube.models.Draft
 import com.tobert.cube.models.Drafter
 import com.tobert.cube.repositories.DraftRepository
-import com.tobert.cube.repositories.DrafterRepository
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -23,7 +22,7 @@ class DraftServiceTest {
     lateinit var cardService: CardService
 
     @Mock
-    lateinit var drafterRepository: DrafterRepository
+    lateinit var drafterService: DrafterService
 
     @InjectMocks
     lateinit var subject: DraftService
@@ -36,20 +35,20 @@ class DraftServiceTest {
 
     @Test
     fun `it assigns cards to the current drafters`() {
-        val firstCard = DummyCard(name="first-card")
-        val secondCard = DummyCard(name="second-card")
-        val thirdCard = DummyCard(name="third-card")
-        val fourthCard = DummyCard(name="fourth-card")
+        val firstCard = DummyCard(name = "first-card")
+        val secondCard = DummyCard(name = "second-card")
+        val thirdCard = DummyCard(name = "third-card")
+        val fourthCard = DummyCard(name = "fourth-card")
 
-        val firstDrafter = DummyDrafter(name="Toby")
-        val secondDrafter = DummyDrafter(name="Omeed")
+        val firstDrafter = DummyDrafter(name = "Toby")
+        val secondDrafter = DummyDrafter(name = "Omeed")
 
-        whenever(drafterRepository.findAll()).thenReturn(listOf(firstDrafter, secondDrafter))
+        whenever(drafterService.getAllShuffled()).thenReturn(listOf(firstDrafter, secondDrafter))
         whenever(cardService.getAllShuffled()).thenReturn(listOf(firstCard, secondCard, thirdCard, fourthCard))
 
         subject.startDraft(2)
 
-        verify(drafterRepository).save(Drafter(cards = listOf(firstCard, secondCard), name = "Toby"))
-        verify(drafterRepository).save(Drafter(cards = listOf(thirdCard, fourthCard), name = "Omeed"))
+        verify(drafterService).save(Drafter(name = "Toby", seat = 1, cards = listOf(firstCard, secondCard)))
+        verify(drafterService).save(Drafter(name = "Omeed", seat = 2, cards = listOf(thirdCard, fourthCard)))
     }
 }

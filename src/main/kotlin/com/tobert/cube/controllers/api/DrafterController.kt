@@ -15,7 +15,7 @@ class DrafterController {
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody drafterRequest: DrafterRequest ) {
         if (drafterRepository.findByName(drafterRequest.drafter) == null) {
-            drafterRepository.save(Drafter(name = drafterRequest.drafter))
+            drafterRepository.save(Drafter(name = drafterRequest.drafter, seat = null))
         }
     }
 }

@@ -6,6 +6,7 @@ import com.tobert.cube.models.Drafter
 fun DummyDrafter(name: String = "", cards: List<Card> = emptyList()): Drafter {
     return Drafter(
             name = name,
-            cards = cards
+            cards = cards,
+            seat = null
     )
 }

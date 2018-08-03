@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface DrafterRepository : JpaRepository <Drafter,Long> {
     fun findByName(name: String): Drafter?
+    fun findAllByOrderBySeatAsc(): List<Drafter>
 }

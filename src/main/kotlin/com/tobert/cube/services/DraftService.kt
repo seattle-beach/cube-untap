@@ -16,17 +16,18 @@ class DraftService {
     lateinit var cardService: CardService
 
     @Autowired
-    lateinit var draftersRepository: DrafterRepository
+    lateinit var drafterService: DrafterService
 
     fun startDraft(cardsPerPack: Int) {
         draftRepository.save(Draft())
 
         val cards = cardService.getAllShuffled().chunked(cardsPerPack)
-        val drafters = draftersRepository.findAll()
+        val drafters = drafterService.getAllShuffled()
 
-        cards.zip(drafters).forEach { (cards, drafter) ->
+        cards.zip(drafters).forEachIndexed { i, (cards, drafter) ->
             drafter.cards = cards
-            draftersRepository.save(drafter)
+            drafter.seat = i + 1
+            drafterService.save(drafter)
         }
     }
 }

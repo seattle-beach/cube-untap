@@ -28,7 +28,7 @@ class CubeController {
     fun cube(): ModelAndView {
         val cube = ModelAndView("cube")
         cube.model["cubeCards"] = cardService.getAll()
-        cube.model["drafters"] = drafterRepository.findAll()
+        cube.model["drafters"] = drafterRepository.findAllByOrderBySeatAsc()
         cube.model["draft"] = draftRepository.findAll()
 
         return cube

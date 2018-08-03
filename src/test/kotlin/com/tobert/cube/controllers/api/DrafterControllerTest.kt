@@ -38,7 +38,7 @@ class DrafterControllerTest {
                 MockMvcResultMatchers.status().isCreated
         )
 
-        verify(mockDrafterRepository).save(Drafter(name= "Toby"))
+        verify(mockDrafterRepository).save(Drafter(name= "Toby", seat = null))
     }
 
     @Test
@@ -53,6 +53,6 @@ class DrafterControllerTest {
                 MockMvcResultMatchers.status().isCreated
         )
 
-        verify(mockDrafterRepository, never()).save(Drafter(name= "Toby"))
+        verify(mockDrafterRepository, never()).save(Drafter(name= "Toby", seat = null))
     }
 }
