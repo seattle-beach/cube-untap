@@ -1,0 +1,7 @@
+---
+applications:
+- name: cube-untap-integ
+  memory: 1G
+  buildpack: java_buildpack
+  path: build/libs/cube-0.0.1-SNAPSHOT.jar
+

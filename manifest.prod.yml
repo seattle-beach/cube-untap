@@ -4,6 +4,8 @@ applications:
   memory: 1G
   buildpack: java_buildpack
   path: build/libs/cube-0.0.1-SNAPSHOT.jar
+  services:
+    - cube-untap-db
   env:
     DDL-AUTO: update
 
