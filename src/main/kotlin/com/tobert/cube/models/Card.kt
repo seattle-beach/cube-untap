@@ -7,7 +7,7 @@ import javax.persistence.*
 data class Card(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Int? = null,
+        val id: Int = 0,
 
         @Column(nullable = false)
         val name: String,

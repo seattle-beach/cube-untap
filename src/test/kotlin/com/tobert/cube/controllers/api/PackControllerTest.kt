@@ -29,7 +29,7 @@ class PackControllerTest {
 
     @Test
     fun `it gets the pack for the drafter`() {
-        val cards = listOf(Card(name = "Black Lotus", borderCropImg = "card-image.png"))
+        val cards = listOf(Card(id = 1, name = "Black Lotus", borderCropImg = "card-image.png"))
         val drafter = DummyDrafter(cards = cards)
 
         whenever(drafterRepository.findByName("Toby")).thenReturn(drafter)
@@ -37,7 +37,7 @@ class PackControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/api/pack/Toby"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
                 .andExpect(
-                        MockMvcResultMatchers.content().json("[\n  {\n    \"name\": \"Black Lotus\",\n    \"image\": \"card-image.png\"\n  }\n]\n")
+                        MockMvcResultMatchers.content().json("[\n  {\n    \"id\": 1,   \n    \"name\": \"Black Lotus\",\n    \"image\": \"card-image.png\"\n  }\n]\n")
                 )
     }
 

@@ -25,6 +25,7 @@ class PackController: BaseController() {
 
         val pack = drafter.cards.map {
             CardEntity(
+                    id = it.id,
                     name = it.name,
                     image = it.borderCropImg ?: ""
             )

@@ -1,4 +1,7 @@
 package com.tobert.cube.entity
 
-data class CardEntity (val name: String,
-                       val image: String)
+data class CardEntity (
+        val id: Int,
+        val name: String,
+        val image: String
+)
