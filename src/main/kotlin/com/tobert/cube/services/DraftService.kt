@@ -2,7 +2,6 @@ package com.tobert.cube.services
 
 import com.tobert.cube.models.Draft
 import com.tobert.cube.repositories.DraftRepository
-import com.tobert.cube.repositories.DrafterRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

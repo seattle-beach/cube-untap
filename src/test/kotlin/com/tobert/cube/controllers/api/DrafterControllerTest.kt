@@ -1,8 +1,10 @@
 package com.tobert.cube.controllers.api
 
 import com.nhaarman.mockito_kotlin.whenever
+import com.tobert.cube.helpers.DummyCard
 import com.tobert.cube.helpers.DummyDrafter
 import com.tobert.cube.models.Drafter
+import com.tobert.cube.repositories.CardRepository
 import com.tobert.cube.repositories.DrafterRepository
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,6 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.util.*
+
 
 @RunWith(SpringRunner::class)
 @WebMvcTest(controllers = [DrafterController::class])
@@ -25,6 +29,8 @@ class DrafterControllerTest {
 
     @MockBean
     lateinit var mockDrafterRepository: DrafterRepository
+    @MockBean
+    lateinit var mockCardRepository: CardRepository
 
     @Test
     fun `it can create a drafter`() {
@@ -38,11 +44,11 @@ class DrafterControllerTest {
                 MockMvcResultMatchers.status().isCreated
         )
 
-        verify(mockDrafterRepository).save(Drafter(name= "Toby", seat = null))
+        verify(mockDrafterRepository).save(Drafter(name = "Toby", seat = null))
     }
 
     @Test
-    fun `does not create a drafter if it already exists`() {
+    fun `it does not create a drafter if it already exists`() {
         whenever(mockDrafterRepository.findByName("Toby")).thenReturn(DummyDrafter())
 
         mvc.perform(
@@ -53,6 +59,56 @@ class DrafterControllerTest {
                 MockMvcResultMatchers.status().isCreated
         )
 
-        verify(mockDrafterRepository, never()).save(Drafter(name= "Toby", seat = null))
+        verify(mockDrafterRepository, never()).save(Drafter(name = "Toby", seat = null))
+    }
+
+    @Test
+    fun `returns a not found error when the drafter is not found`() {
+        whenever(mockDrafterRepository.findByName("LSV")).thenReturn(null)
+
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/drafter/LSV/pickCard")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\n    \"cardId\": 2\n}")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound)
+    }
+
+    @Test
+    fun `returns a bad request when the card is not found`() {
+        whenever(mockDrafterRepository.findByName("LSV")).thenReturn(DummyDrafter())
+        whenever(mockCardRepository.findById(2)).thenReturn(Optional.empty())
+
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/drafter/LSV/pickCard")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\n    \"cardId\": 2\n}")
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest)
+    }
+
+
+    @Test
+    fun `it adds a card to a drafters picked cards`() {
+        val drafter = DummyDrafter(
+                name = "LSV",
+                pickedCards = listOf(DummyCard(id = 1))
+        )
+
+        whenever(mockDrafterRepository.findByName("LSV")).thenReturn(drafter)
+        whenever(mockCardRepository.findById(2)).thenReturn(Optional.of(DummyCard(id = 2)))
+
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/drafter/LSV/pickCard")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\n    \"cardId\": 2\n}")
+        ).andExpect(
+                MockMvcResultMatchers.status().isCreated
+        )
+
+        verify(mockDrafterRepository).save(
+                DummyDrafter (
+                        name = "LSV",
+                        pickedCards = listOf(DummyCard(id = 1), DummyCard(id = 2))
+                )
+        )
     }
 }

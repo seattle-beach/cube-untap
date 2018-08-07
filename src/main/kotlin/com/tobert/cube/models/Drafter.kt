@@ -15,6 +15,9 @@ data class Drafter(
         @OneToMany(fetch = FetchType.EAGER)
         var cards: List<Card> = emptyList(),
 
+        @OneToMany(fetch = FetchType.LAZY)
+        var pickedCards: List<Card> = emptyList(),
+
         @Column(nullable = true)
         var seat: Int?
 )
