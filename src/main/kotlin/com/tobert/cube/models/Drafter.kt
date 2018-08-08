@@ -12,7 +12,7 @@ data class Drafter(
         @Column(nullable = false, unique = true)
         val name: String,
 
-        @OneToMany(fetch = FetchType.EAGER)
+        @OneToMany(fetch = FetchType.LAZY)
         var cards: List<Card> = emptyList(),
 
         @OneToMany(fetch = FetchType.LAZY)
