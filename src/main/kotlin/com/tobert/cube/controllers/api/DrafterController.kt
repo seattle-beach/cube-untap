@@ -1,5 +1,6 @@
 package com.tobert.cube.controllers.api
 
+import com.tobert.cube.entity.CardEntity
 import com.tobert.cube.models.Drafter
 import com.tobert.cube.repositories.CardRepository
 import com.tobert.cube.repositories.DrafterRepository
@@ -25,7 +26,7 @@ class DrafterController : BaseController() {
 
     @PostMapping("/drafter/{drafterName}/pickCard")
     fun pickCard(@PathVariable drafterName: String,
-                 @RequestBody pickCardRequest: PickCardRequest) : ResponseEntity<Void> {
+                 @RequestBody pickCardRequest: PickCardRequest): ResponseEntity<Void> {
 
         val drafter = drafterRepository.findByName(drafterName)
         if (drafter == null) {
@@ -42,6 +43,25 @@ class DrafterController : BaseController() {
         drafterRepository.save(drafter)
 
         return ResponseEntity(HttpStatus.CREATED)
+    }
+
+
+    @GetMapping("/drafter/{drafterName}/pickedCards")
+    fun pickedCards(@PathVariable drafterName: String): ResponseEntity<List<CardEntity>> {
+        val drafter = drafterRepository.findByName(drafterName)
+        if (drafter == null) {
+            return ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+
+        val pickedCards = drafter.pickedCards.map {
+            CardEntity(
+                    id = it.id,
+                    name = it.name,
+                    image = it.borderCropImg ?: ""
+            )
+        }
+
+        return ResponseEntity.ok(pickedCards)
     }
 }
 

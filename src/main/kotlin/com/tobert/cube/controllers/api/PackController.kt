@@ -32,5 +32,4 @@ class PackController: BaseController() {
         }
         return ResponseEntity.ok(pack)
     }
-
 }

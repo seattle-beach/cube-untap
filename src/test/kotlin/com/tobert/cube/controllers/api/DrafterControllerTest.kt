@@ -105,10 +105,36 @@ class DrafterControllerTest {
         )
 
         verify(mockDrafterRepository).save(
-                DummyDrafter (
+                DummyDrafter(
                         name = "LSV",
                         pickedCards = listOf(DummyCard(id = 1), DummyCard(id = 2))
                 )
         )
+    }
+
+    @Test
+    fun `it returns picked cards for a drafter`() {
+        val drafter = DummyDrafter(
+                name = "LSV",
+                pickedCards = listOf(
+                        DummyCard(id = 1, name = "Black Lotus", borderCropImg = "card-image.png"),
+                        DummyCard(id = 2, name = "Mox emerald", borderCropImg = "other-card-image.png")
+                )
+        )
+        whenever(mockDrafterRepository.findByName("LSV")).thenReturn(drafter)
+
+        mvc.perform(MockMvcRequestBuilders.get("/api/drafter/LSV/pickedCards"))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+                .andExpect(
+                        MockMvcResultMatchers.content().json("[\n  {\n    \"id\": 1,\n    \"name\": \"Black Lotus\",\n    \"image\": \"card-image.png\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Mox emerald\",\n    \"image\": \"other-card-image.png\"\n  }\n]")
+                )
+    }
+
+    @Test
+    fun `it returns a 404 when the drafter does not exist`() {
+        whenever(mockDrafterRepository.findByName("LSV")).thenReturn(null)
+
+        mvc.perform(MockMvcRequestBuilders.get("/api/drafter/LSV/pickedCards"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 }

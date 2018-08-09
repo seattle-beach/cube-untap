@@ -2,6 +2,7 @@ package com.tobert.cube.controllers.api
 
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
+import com.tobert.cube.helpers.DummyCard
 import com.tobert.cube.helpers.DummyDrafter
 import com.tobert.cube.models.Card
 import com.tobert.cube.repositories.DrafterRepository
@@ -29,7 +30,7 @@ class PackControllerTest {
 
     @Test
     fun `it gets the pack for the drafter`() {
-        val cards = listOf(Card(id = 1, name = "Black Lotus", borderCropImg = "card-image.png"))
+        val cards = listOf(DummyCard(id = 1, name = "Black Lotus", borderCropImg = "card-image.png"))
         val drafter = DummyDrafter(cards = cards)
 
         whenever(drafterRepository.findByName("Toby")).thenReturn(drafter)
