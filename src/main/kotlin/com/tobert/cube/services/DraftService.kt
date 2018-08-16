@@ -1,6 +1,7 @@
 package com.tobert.cube.services
 
 import com.tobert.cube.models.Draft
+import com.tobert.cube.models.Pack
 import com.tobert.cube.repositories.DraftRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,7 +25,7 @@ class DraftService {
         val drafters = drafterService.getAllShuffled()
 
         cards.zip(drafters).forEachIndexed { i, (cards, drafter) ->
-            drafter.cards = cards
+            drafter.packs = arrayListOf(Pack(cards = cards.toMutableList()))
             drafter.seat = i + 1
             drafterService.save(drafter)
         }

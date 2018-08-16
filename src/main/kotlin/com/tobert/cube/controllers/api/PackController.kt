@@ -23,7 +23,7 @@ class PackController: BaseController() {
             return ResponseEntity(HttpStatus.NOT_FOUND)
         }
 
-        val pack = drafter.cards.map {
+        val pack = drafter.currentPackCards().map {
             CardEntity(
                     id = it.id,
                     name = it.name,

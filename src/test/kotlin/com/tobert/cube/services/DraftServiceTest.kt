@@ -4,8 +4,10 @@ import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import com.tobert.cube.helpers.DummyCard
 import com.tobert.cube.helpers.DummyDrafter
+import com.tobert.cube.helpers.DummyPack
 import com.tobert.cube.models.Draft
 import com.tobert.cube.models.Drafter
+import com.tobert.cube.models.Pack
 import com.tobert.cube.repositories.DraftRepository
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -48,7 +50,7 @@ class DraftServiceTest {
 
         subject.startDraft(2)
 
-        verify(drafterService).save(Drafter(name = "Toby", seat = 1, cards = listOf(firstCard, secondCard)))
-        verify(drafterService).save(Drafter(name = "Omeed", seat = 2, cards = listOf(thirdCard, fourthCard)))
+        verify(drafterService).save(Drafter(name = "Toby", seat = 1, packs = listOf(Pack(cards = mutableListOf(firstCard, secondCard)))))
+        verify(drafterService).save(Drafter(name = "Omeed", seat = 2, packs = listOf(Pack(cards = mutableListOf(thirdCard, fourthCard)))))
     }
 }
