@@ -50,7 +50,7 @@ class DraftServiceTest {
 
         subject.startDraft(2)
 
-        verify(drafterService).save(Drafter(name = "Toby", seat = 1, packs = listOf(Pack(cards = mutableListOf(firstCard, secondCard)))))
-        verify(drafterService).save(Drafter(name = "Omeed", seat = 2, packs = listOf(Pack(cards = mutableListOf(thirdCard, fourthCard)))))
+        verify(drafterService).save(Drafter(name = "Toby", seat = 1, packs = mutableListOf(Pack(cards = mutableListOf(firstCard, secondCard)))))
+        verify(drafterService).save(Drafter(name = "Omeed", seat = 2, packs = mutableListOf(Pack(cards = mutableListOf(thirdCard, fourthCard)))))
     }
 }

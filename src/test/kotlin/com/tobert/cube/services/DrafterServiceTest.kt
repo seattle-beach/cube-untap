@@ -71,7 +71,7 @@ class DrafterServiceTest {
 
         val drafter = DummyDrafter(
                 name = "LSV",
-                packs = listOf(DummyPack(cards = mutableListOf(card))),
+                packs = mutableListOf(DummyPack(cards = mutableListOf(card))),
                 pickedCards = listOf(DummyCard(id = 1))
         )
 
@@ -80,7 +80,7 @@ class DrafterServiceTest {
         verify(mockRepository).save(
                 DummyDrafter(
                         name = "LSV",
-                        packs = listOf(DummyPack()),
+                        packs = mutableListOf(DummyPack()),
                         pickedCards = listOf(DummyCard(id = 1), DummyCard(id = 2))
                 )
         )

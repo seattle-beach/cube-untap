@@ -58,7 +58,7 @@ class DrafterControllerTest {
     fun `returns a bad request when the card is not in drafters current pack`() {
         val currentPack = DummyPack(cards = mutableListOf(DummyCard(id = 1)))
         val nextPack = DummyPack(cards = mutableListOf(DummyCard(id = 2)))
-        val drafter = DummyDrafter(packs = listOf(currentPack, nextPack))
+        val drafter = DummyDrafter(packs = mutableListOf(currentPack, nextPack))
 
         whenever(mockDrafterService.findDrafter("LSV")).thenReturn(drafter)
 
@@ -73,7 +73,7 @@ class DrafterControllerTest {
     @Test
     fun `it adds a card to a drafters picked cards`() {
         val pack = DummyPack(cards = mutableListOf(DummyCard(id = 2)))
-        val drafter = DummyDrafter(packs = listOf(pack))
+        val drafter = DummyDrafter(packs = mutableListOf(pack))
         whenever(mockDrafterService.findDrafter("LSV")).thenReturn(drafter)
 
         mvc.perform(

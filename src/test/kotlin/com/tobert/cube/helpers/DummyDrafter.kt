@@ -6,7 +6,7 @@ import com.tobert.cube.models.Pack
 
 fun DummyDrafter(
         name: String = "",
-        packs: List<Pack> = emptyList(),
+        packs: MutableList<Pack> = mutableListOf(),
         pickedCards: List<Card> = emptyList()
 ): Drafter {
     return Drafter(

@@ -37,7 +37,7 @@ class PackControllerTest {
                 cards = mutableListOf(DummyCard(id = 2, name = "Mox emerald", borderCropImg = "other-card-image.png"))
         )
 
-        val drafter = DummyDrafter(packs = listOf(firstPack, secondPack))
+        val drafter = DummyDrafter(packs = mutableListOf(firstPack, secondPack))
 
         whenever(drafterService.findDrafter("Toby")).thenReturn(drafter)
 
