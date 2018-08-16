@@ -13,7 +13,7 @@ data class Drafter(
         val name: String,
 
         @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        var packs: List<Pack> = emptyList(),
+        var packs: MutableList<Pack> = mutableListOf(),
 
         @OneToMany(fetch = FetchType.LAZY)
         var pickedCards: List<Card> = emptyList(),
