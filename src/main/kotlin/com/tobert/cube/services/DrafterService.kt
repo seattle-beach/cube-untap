@@ -13,4 +13,14 @@ class DrafterService(val drafterRepository: DrafterRepository) {
     fun save(drafter: Drafter) {
         drafterRepository.save(drafter)
     }
+
+    fun findDrafter(drafterName: String): Drafter? {
+        return drafterRepository.findByName(drafterName)
+    }
+
+    fun create(drafterName: String) {
+        if (drafterRepository.findByName(drafterName) == null) {
+            drafterRepository.save(Drafter(name = drafterName, seat = null))
+        }
+    }
 }

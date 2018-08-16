@@ -1,33 +1,34 @@
 package com.tobert.cube.services
 
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.spy
+import com.nhaarman.mockito_kotlin.whenever
 import com.tobert.cube.helpers.DummyCardResponse
 import com.tobert.cube.helpers.DummyImages
 import com.tobert.cube.models.Card
 import com.tobert.cube.repositories.CardRepository
 import com.tobert.cube.scryfall.ScryfallClient
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
-import com.nhaarman.mockito_kotlin.whenever
-import com.tobert.cube.helpers.DummyCard
 import org.mockito.Mockito
-import org.mockito.Mockito.*
+import org.mockito.Mockito.verify
 
-@RunWith(MockitoJUnitRunner::class)
 class CardServiceClientTest {
-    @Mock
-    lateinit var scryfallClient: ScryfallClient
+    private lateinit var scryfallClient: ScryfallClient
+    private lateinit var cardRepository: CardRepository
+    private lateinit var subject: CardServiceClient
 
-    @Mock
-    lateinit var cardRepository: CardRepository
+    @Before
+    fun setup() {
+        scryfallClient = Mockito.mock(ScryfallClient::class.java)
+        cardRepository = Mockito.mock(CardRepository::class.java)
+        subject = CardServiceClient(scryfallClient, cardRepository)
+    }
 
-    @InjectMocks
-    lateinit var subject: CardServiceClient
+    @Test
+    fun findCard() {
+        subject.findCard(123)
+        verify(cardRepository).findById(123)
+    }
 
     @Test
     fun `it deletes the cards before creating`() {

@@ -4,11 +4,13 @@ import com.tobert.cube.models.Card
 import com.tobert.cube.repositories.CardRepository
 import com.tobert.cube.scryfall.ScryfallClient
 import org.springframework.stereotype.Service
+import java.util.*
 
 interface CardService {
     fun createCube(cards: List<String>)
     fun getAll(): List<Card>
     fun getAllShuffled(): List<Card>
+    fun findCard(cardId: Int): Optional<Card>
 }
 
 @Service
@@ -38,6 +40,10 @@ class CardServiceClient(
 
     override fun getAllShuffled(): List<Card> {
         return getAll().shuffled()
+    }
+
+    override fun findCard(cardId: Int): Optional<Card> {
+        return cardRepository.findById(cardId)
     }
 }
 

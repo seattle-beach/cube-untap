@@ -1,14 +1,13 @@
 package com.tobert.cube.controllers.api
 
+import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.whenever
 import com.tobert.cube.helpers.DummyCard
 import com.tobert.cube.helpers.DummyDrafter
-import com.tobert.cube.models.Drafter
-import com.tobert.cube.repositories.CardRepository
-import com.tobert.cube.repositories.DrafterRepository
+import com.tobert.cube.services.CardService
+import com.tobert.cube.services.DrafterService
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -28,13 +27,13 @@ class DrafterControllerTest {
     lateinit var mvc: MockMvc
 
     @MockBean
-    lateinit var mockDrafterRepository: DrafterRepository
+    lateinit var mockCardService: CardService
     @MockBean
-    lateinit var mockCardRepository: CardRepository
+    lateinit var mockDrafterService: DrafterService
 
     @Test
     fun `it can create a drafter`() {
-        whenever(mockDrafterRepository.findByName("Toby")).thenReturn(null)
+        doNothing().whenever(mockDrafterService).create("Toby")
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/drafter/create")
@@ -44,27 +43,12 @@ class DrafterControllerTest {
                 MockMvcResultMatchers.status().isCreated
         )
 
-        verify(mockDrafterRepository).save(Drafter(name = "Toby", seat = null))
-    }
-
-    @Test
-    fun `it does not create a drafter if it already exists`() {
-        whenever(mockDrafterRepository.findByName("Toby")).thenReturn(DummyDrafter())
-
-        mvc.perform(
-                MockMvcRequestBuilders.post("/api/drafter/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\n  \"drafter\": \"Toby\"\n}")
-        ).andExpect(
-                MockMvcResultMatchers.status().isCreated
-        )
-
-        verify(mockDrafterRepository, never()).save(Drafter(name = "Toby", seat = null))
+        verify(mockDrafterService).create("Toby")
     }
 
     @Test
     fun `returns a not found error when the drafter is not found`() {
-        whenever(mockDrafterRepository.findByName("LSV")).thenReturn(null)
+        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(null)
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/drafter/LSV/pickCard")
@@ -75,8 +59,8 @@ class DrafterControllerTest {
 
     @Test
     fun `returns a bad request when the card is not found`() {
-        whenever(mockDrafterRepository.findByName("LSV")).thenReturn(DummyDrafter())
-        whenever(mockCardRepository.findById(2)).thenReturn(Optional.empty())
+        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(DummyDrafter())
+        whenever(mockCardService.findCard(2)).thenReturn(Optional.empty())
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/drafter/LSV/pickCard")
@@ -93,8 +77,8 @@ class DrafterControllerTest {
                 pickedCards = listOf(DummyCard(id = 1))
         )
 
-        whenever(mockDrafterRepository.findByName("LSV")).thenReturn(drafter)
-        whenever(mockCardRepository.findById(2)).thenReturn(Optional.of(DummyCard(id = 2)))
+        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(drafter)
+        whenever(mockCardService.findCard(2)).thenReturn(Optional.of(DummyCard(id = 2)))
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/drafter/LSV/pickCard")
@@ -104,7 +88,7 @@ class DrafterControllerTest {
                 MockMvcResultMatchers.status().isCreated
         )
 
-        verify(mockDrafterRepository).save(
+        verify(mockDrafterService).save(
                 DummyDrafter(
                         name = "LSV",
                         pickedCards = listOf(DummyCard(id = 1), DummyCard(id = 2))
@@ -121,7 +105,8 @@ class DrafterControllerTest {
                         DummyCard(id = 2, name = "Mox emerald", borderCropImg = "other-card-image.png")
                 )
         )
-        whenever(mockDrafterRepository.findByName("LSV")).thenReturn(drafter)
+
+        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(drafter)
 
         mvc.perform(MockMvcRequestBuilders.get("/api/drafter/LSV/pickedCards"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
@@ -132,7 +117,7 @@ class DrafterControllerTest {
 
     @Test
     fun `it returns a 404 when the drafter does not exist`() {
-        whenever(mockDrafterRepository.findByName("LSV")).thenReturn(null)
+        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(null)
 
         mvc.perform(MockMvcRequestBuilders.get("/api/drafter/LSV/pickedCards"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound)
