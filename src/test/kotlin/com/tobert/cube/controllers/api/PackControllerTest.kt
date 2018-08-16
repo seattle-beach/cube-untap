@@ -5,7 +5,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import com.tobert.cube.helpers.DummyCard
 import com.tobert.cube.helpers.DummyDrafter
 import com.tobert.cube.helpers.DummyPack
-import com.tobert.cube.repositories.DrafterRepository
+import com.tobert.cube.services.DrafterService
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,7 @@ class PackControllerTest {
     lateinit var mvc: MockMvc
 
     @MockBean
-    lateinit var drafterRepository: DrafterRepository
+    lateinit var drafterService: DrafterService
 
     @Test
     fun `it gets the first pack for the drafter`() {
@@ -39,7 +39,7 @@ class PackControllerTest {
 
         val drafter = DummyDrafter(packs = listOf(firstPack, secondPack))
 
-        whenever(drafterRepository.findByName("Toby")).thenReturn(drafter)
+        whenever(drafterService.findDrafter("Toby")).thenReturn(drafter)
 
         mvc.perform(MockMvcRequestBuilders.get("/api/pack/Toby"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
@@ -50,7 +50,7 @@ class PackControllerTest {
 
     @Test
     fun `returns an empty array when the drafter does not have cards`() {
-        whenever(drafterRepository.findByName(any())).thenReturn(DummyDrafter())
+        whenever(drafterService.findDrafter(any())).thenReturn(DummyDrafter())
 
         mvc.perform(MockMvcRequestBuilders.get("/api/pack/Toby"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
@@ -62,7 +62,7 @@ class PackControllerTest {
 
     @Test
     fun `returns an error when the drafter is not found`() {
-        whenever(drafterRepository.findByName(any())).thenReturn(null)
+        whenever(drafterService.findDrafter(any())).thenReturn(null)
 
         mvc.perform(MockMvcRequestBuilders.get("/api/pack/Toby"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound)
