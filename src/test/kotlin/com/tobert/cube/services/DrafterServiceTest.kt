@@ -66,35 +66,22 @@ class DrafterServiceTest {
     }
 
     @Test
-    fun `it adds a card to the drafters picked cards`() {
+    fun `it adds card to drafters picked cards and removes it from the pack`() {
+        val card = DummyCard(id = 2)
+
         val drafter = DummyDrafter(
                 name = "LSV",
+                packs = listOf(DummyPack(cards = mutableListOf(card))),
                 pickedCards = listOf(DummyCard(id = 1))
         )
-        val card = DummyCard(id = 2)
 
         subject.pickCard(drafter, card)
 
         verify(mockRepository).save(
                 DummyDrafter(
                         name = "LSV",
+                        packs = listOf(DummyPack()),
                         pickedCards = listOf(DummyCard(id = 1), DummyCard(id = 2))
-                )
-        )
-    }
-
-    @Test
-    fun `it removes the picked card from the pack`() {
-        val card = DummyCard(id = 1)
-        val pack = DummyPack(cards = mutableListOf(card))
-        val drafter = DummyDrafter(packs = listOf(pack))
-
-        subject.pickCard(drafter, card)
-
-        verify(mockRepository).save(
-                DummyDrafter(
-                        packs = mutableListOf(DummyPack()),
-                        pickedCards = listOf(card)
                 )
         )
     }

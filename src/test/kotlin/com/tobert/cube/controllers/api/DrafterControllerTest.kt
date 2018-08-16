@@ -4,7 +4,7 @@ import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.whenever
 import com.tobert.cube.helpers.DummyCard
 import com.tobert.cube.helpers.DummyDrafter
-import com.tobert.cube.services.CardService
+import com.tobert.cube.helpers.DummyPack
 import com.tobert.cube.services.DrafterService
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.util.*
 
 
 @RunWith(SpringRunner::class)
@@ -26,8 +25,6 @@ class DrafterControllerTest {
     @Autowired
     lateinit var mvc: MockMvc
 
-    @MockBean
-    lateinit var mockCardService: CardService
     @MockBean
     lateinit var mockDrafterService: DrafterService
 
@@ -58,9 +55,12 @@ class DrafterControllerTest {
     }
 
     @Test
-    fun `returns a bad request when the card is not found`() {
-        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(DummyDrafter())
-        whenever(mockCardService.findCard(2)).thenReturn(Optional.empty())
+    fun `returns a bad request when the card is not in drafters current pack`() {
+        val currentPack = DummyPack(cards = mutableListOf(DummyCard(id = 1)))
+        val nextPack = DummyPack(cards = mutableListOf(DummyCard(id = 2)))
+        val drafter = DummyDrafter(packs = listOf(currentPack, nextPack))
+
+        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(drafter)
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/drafter/LSV/pickCard")
@@ -72,8 +72,9 @@ class DrafterControllerTest {
 
     @Test
     fun `it adds a card to a drafters picked cards`() {
-        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(DummyDrafter())
-        whenever(mockCardService.findCard(2)).thenReturn(Optional.of(DummyCard()))
+        val pack = DummyPack(cards = mutableListOf(DummyCard(id = 2)))
+        val drafter = DummyDrafter(packs = listOf(pack))
+        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(drafter)
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/drafter/LSV/pickCard")
@@ -83,7 +84,7 @@ class DrafterControllerTest {
                 MockMvcResultMatchers.status().isCreated
         )
 
-        verify(mockDrafterService).pickCard(DummyDrafter(), DummyCard())
+        verify(mockDrafterService).pickCard(drafter, DummyCard(id = 2))
     }
 
     @Test

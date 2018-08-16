@@ -1,7 +1,6 @@
 package com.tobert.cube.controllers.api
 
 import com.tobert.cube.entity.CardEntity
-import com.tobert.cube.services.CardService
 import com.tobert.cube.services.DrafterService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class DrafterController : BaseController() {
-    @Autowired
-    lateinit var cardService: CardService
     @Autowired
     lateinit var drafterService: DrafterService
 
@@ -30,12 +27,12 @@ class DrafterController : BaseController() {
             return ResponseEntity(HttpStatus.NOT_FOUND)
         }
 
-        val pickedCard = cardService.findCard(pickCardRequest.cardId)
-        if (!pickedCard.isPresent) {
+        val pickedCard = drafter.cardFromCurrentPack(pickCardRequest.cardId)
+        if (pickedCard == null) {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
 
-        drafterService.pickCard(drafter, pickedCard.get())
+        drafterService.pickCard(drafter, pickedCard)
 
         return ResponseEntity(HttpStatus.CREATED)
     }

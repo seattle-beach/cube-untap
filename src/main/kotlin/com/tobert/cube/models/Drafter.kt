@@ -29,6 +29,13 @@ data class Drafter(
         }
     }
 
+    fun cardFromCurrentPack(cardId: Int): Card? {
+        return when {
+            this.packs.isNotEmpty() -> this.packs.first().cards.find { it.id == cardId }
+            else -> null
+        }
+    }
+
     fun currentPackCards(): List<Card> {
         return when {
             this.packs.isNotEmpty() -> this.packs.first().cards
