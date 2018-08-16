@@ -72,13 +72,8 @@ class DrafterControllerTest {
 
     @Test
     fun `it adds a card to a drafters picked cards`() {
-        val drafter = DummyDrafter(
-                name = "LSV",
-                pickedCards = listOf(DummyCard(id = 1))
-        )
-
-        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(drafter)
-        whenever(mockCardService.findCard(2)).thenReturn(Optional.of(DummyCard(id = 2)))
+        whenever(mockDrafterService.findDrafter("LSV")).thenReturn(DummyDrafter())
+        whenever(mockCardService.findCard(2)).thenReturn(Optional.of(DummyCard()))
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/drafter/LSV/pickCard")
@@ -88,12 +83,7 @@ class DrafterControllerTest {
                 MockMvcResultMatchers.status().isCreated
         )
 
-        verify(mockDrafterService).save(
-                DummyDrafter(
-                        name = "LSV",
-                        pickedCards = listOf(DummyCard(id = 1), DummyCard(id = 2))
-                )
-        )
+        verify(mockDrafterService).pickCard(DummyDrafter(), DummyCard())
     }
 
     @Test

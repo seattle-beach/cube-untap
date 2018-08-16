@@ -4,7 +4,9 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import com.tobert.cube.helpers.DummyCard
 import com.tobert.cube.helpers.DummyDrafter
+import com.tobert.cube.helpers.DummyPack
 import com.tobert.cube.models.Drafter
 import com.tobert.cube.repositories.DrafterRepository
 import org.junit.Before
@@ -61,5 +63,39 @@ class DrafterServiceTest {
         subject.create("Toby")
 
         verify(mockRepository, never()).save(any<Drafter>())
+    }
+
+    @Test
+    fun `it adds a card to the drafters picked cards`() {
+        val drafter = DummyDrafter(
+                name = "LSV",
+                pickedCards = listOf(DummyCard(id = 1))
+        )
+        val card = DummyCard(id = 2)
+
+        subject.pickCard(drafter, card)
+
+        verify(mockRepository).save(
+                DummyDrafter(
+                        name = "LSV",
+                        pickedCards = listOf(DummyCard(id = 1), DummyCard(id = 2))
+                )
+        )
+    }
+
+    @Test
+    fun `it removes the picked card from the pack`() {
+        val card = DummyCard(id = 1)
+        val pack = DummyPack(cards = mutableListOf(card))
+        val drafter = DummyDrafter(packs = listOf(pack))
+
+        subject.pickCard(drafter, card)
+
+        verify(mockRepository).save(
+                DummyDrafter(
+                        packs = mutableListOf(DummyPack()),
+                        pickedCards = listOf(card)
+                )
+        )
     }
 }

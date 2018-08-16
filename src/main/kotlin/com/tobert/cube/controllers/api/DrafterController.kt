@@ -35,9 +35,7 @@ class DrafterController : BaseController() {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
 
-        drafter.pickedCards = drafter.pickedCards.plus(pickedCard.get())
-
-        drafterService.save(drafter)
+        drafterService.pickCard(drafter, pickedCard.get())
 
         return ResponseEntity(HttpStatus.CREATED)
     }

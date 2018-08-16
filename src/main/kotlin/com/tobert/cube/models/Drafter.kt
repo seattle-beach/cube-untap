@@ -22,11 +22,18 @@ data class Drafter(
         var seat: Int?
 ) {
 
-    fun currentPackCards(): List<Card> {
-        if (this.packs.isNotEmpty()) {
-            return this.packs.first().cards
+    fun currentPack(): Pack? {
+        return when {
+            this.packs.isNotEmpty() -> this.packs.first()
+            else -> null
         }
-        return emptyList()
+    }
+
+    fun currentPackCards(): List<Card> {
+        return when {
+            this.packs.isNotEmpty() -> this.packs.first().cards
+            else -> return emptyList()
+        }
     }
 
 }

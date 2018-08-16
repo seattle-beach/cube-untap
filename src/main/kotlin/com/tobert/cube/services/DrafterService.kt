@@ -1,5 +1,6 @@
 package com.tobert.cube.services
 
+import com.tobert.cube.models.Card
 import com.tobert.cube.models.Drafter
 import com.tobert.cube.repositories.DrafterRepository
 import org.springframework.stereotype.Service
@@ -22,5 +23,12 @@ class DrafterService(val drafterRepository: DrafterRepository) {
         if (drafterRepository.findByName(drafterName) == null) {
             drafterRepository.save(Drafter(name = drafterName, seat = null))
         }
+    }
+
+    fun pickCard(drafter: Drafter, pickedCard: Card) {
+        drafter.pickedCards = drafter.pickedCards.plus(pickedCard)
+        drafter.currentPack()!!.cards.remove(pickedCard)
+
+        drafterRepository.save(drafter)
     }
 }
