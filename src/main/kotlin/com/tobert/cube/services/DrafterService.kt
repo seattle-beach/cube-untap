@@ -6,7 +6,8 @@ import com.tobert.cube.repositories.DrafterRepository
 import org.springframework.stereotype.Service
 
 @Service
-class DrafterService(val drafterRepository: DrafterRepository) {
+class DrafterService(val drafterRepository: DrafterRepository,
+                     val draftService: DraftService) {
     fun getAllShuffled(): List<Drafter> {
         return drafterRepository.findAll().shuffled()
     }
@@ -26,9 +27,12 @@ class DrafterService(val drafterRepository: DrafterRepository) {
     }
 
     fun pickCard(drafter: Drafter, pickedCard: Card) {
-        drafter.pickedCards = drafter.pickedCards.plus(pickedCard)
-        drafter.currentPack()!!.cards.remove(pickedCard)
+        val pack = drafter.removeCurrentPack()
+        pack.cards.remove(pickedCard)
+        drafter.addCardToPicks(pickedCard)
 
         drafterRepository.save(drafter)
+
+        draftService.passDraftersPack(drafter, pack)
     }
 }

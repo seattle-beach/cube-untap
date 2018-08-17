@@ -16,12 +16,14 @@ import org.mockito.Mockito
 class DrafterServiceTest {
 
     private lateinit var mockRepository: DrafterRepository
+    private lateinit var mockDraftService: DraftService
     private lateinit var subject: DrafterService
 
     @Before
     fun setup() {
         mockRepository = Mockito.mock(DrafterRepository::class.java)
-        subject = DrafterService(mockRepository)
+        mockDraftService = Mockito.mock(DraftService::class.java)
+        subject = DrafterService(mockRepository, mockDraftService)
     }
 
     @Test
@@ -66,23 +68,22 @@ class DrafterServiceTest {
     }
 
     @Test
-    fun `it adds card to drafters picked cards and removes it from the pack`() {
+    fun `it picks the cards and passes the pack`() {
         val card = DummyCard(id = 2)
 
         val drafter = DummyDrafter(
-                name = "LSV",
-                packs = mutableListOf(DummyPack(cards = mutableListOf(card))),
+                packs = mutableListOf(DummyPack(id = 1, cards = mutableListOf(card)), DummyPack(id = 2)),
                 pickedCards = listOf(DummyCard(id = 1))
         )
 
         subject.pickCard(drafter, card)
 
-        verify(mockRepository).save(
-                DummyDrafter(
-                        name = "LSV",
-                        packs = mutableListOf(DummyPack()),
-                        pickedCards = listOf(DummyCard(id = 1), DummyCard(id = 2))
-                )
+        val expectedDrafter = DummyDrafter(
+                packs = mutableListOf(DummyPack(id = 2)),
+                pickedCards = listOf(DummyCard(id = 1), DummyCard(id = 2))
         )
+
+        verify(mockRepository).save(expectedDrafter)
+        verify(mockDraftService).passDraftersPack(expectedDrafter, DummyPack(id = 1))
     }
 }

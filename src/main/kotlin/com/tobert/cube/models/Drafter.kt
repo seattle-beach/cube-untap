@@ -22,11 +22,12 @@ data class Drafter(
         var seat: Int?
 ) {
 
-    fun currentPack(): Pack? {
-        return when {
-            this.packs.isNotEmpty() -> this.packs.first()
-            else -> null
-        }
+    fun removeCurrentPack(): Pack {
+        return this.packs.removeAt(0)
+    }
+
+    fun addCardToPicks(card: Card) {
+        this.pickedCards = this.pickedCards.plus(card)
     }
 
     fun cardFromCurrentPack(cardId: Int): Card? {
@@ -42,5 +43,4 @@ data class Drafter(
             else -> return emptyList()
         }
     }
-
 }
