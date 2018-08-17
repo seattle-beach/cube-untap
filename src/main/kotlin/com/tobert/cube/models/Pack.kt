@@ -5,10 +5,14 @@ import javax.persistence.*
 @Entity
 @Table(name = "Packs")
 data class Pack(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Int? = null,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int? = null,
 
-        @OneToMany(fetch = FetchType.LAZY)
-        var cards: MutableList<Card> = mutableListOf()
-)
+    @OneToMany(fetch = FetchType.LAZY)
+    var cards: MutableList<Card> = mutableListOf()
+) {
+    fun removeCard(card: Card) {
+        this.cards.remove(card)
+    }
+}

@@ -55,7 +55,7 @@ class DrafterServiceTest {
 
         subject.create("Toby")
 
-        verify(mockRepository).save(Drafter(name = "Toby", seat = null))
+        verify(mockRepository).save(Drafter(name = "Toby"))
     }
 
     @Test
@@ -68,22 +68,22 @@ class DrafterServiceTest {
     }
 
     @Test
-    fun `it picks the cards and passes the pack`() {
-        val card = DummyCard(id = 2)
+    fun `it picks the cards from the pack and passes it`() {
+        val card = DummyCard(id = 1)
 
         val drafter = DummyDrafter(
-                packs = mutableListOf(DummyPack(id = 1, cards = mutableListOf(card)), DummyPack(id = 2)),
-                pickedCards = listOf(DummyCard(id = 1))
+                packs = mutableListOf(DummyPack(id = 1, cards = mutableListOf(card)), DummyPack()),
+                pickedCards = listOf(DummyCard())
         )
 
         subject.pickCard(drafter, card)
 
         val expectedDrafter = DummyDrafter(
-                packs = mutableListOf(DummyPack(id = 2)),
-                pickedCards = listOf(DummyCard(id = 1), DummyCard(id = 2))
+                packs = mutableListOf(DummyPack(id = 1, cards = mutableListOf()), DummyPack()),
+                pickedCards = listOf(DummyCard(), card)
         )
 
         verify(mockRepository).save(expectedDrafter)
-        verify(mockDraftService).passDraftersPack(expectedDrafter, DummyPack(id = 1))
+        verify(mockDraftService).passDraftersPack(expectedDrafter)
     }
 }

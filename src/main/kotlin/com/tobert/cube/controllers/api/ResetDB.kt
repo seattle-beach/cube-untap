@@ -20,8 +20,8 @@ class ResetDB: BaseController() {
 
     @GetMapping("/reset_db")
     fun reset() {
-        drafterRepository.deleteAll()
         draftRepository.deleteAll()
+        drafterRepository.deleteAll()
         packRepository.deleteAll()
     }
 }

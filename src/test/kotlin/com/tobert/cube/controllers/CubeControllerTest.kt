@@ -38,17 +38,17 @@ class CubeControllerTest {
 
     @Test
     fun `it gets the cube from the repository`() {
-        whenever(mockCardService.getAll()).thenReturn(listOf(DummyCard("")))
-        whenever(drafterRepository.findAllByOrderBySeatAsc()).thenReturn(listOf(DummyDrafter("")))
+        whenever(mockCardService.getAll()).thenReturn(listOf(DummyCard()))
+        whenever(drafterRepository.findAllByOrderBySeatAsc()).thenReturn(listOf(DummyDrafter()))
         whenever(draftRepository.findAll()).thenReturn(listOf(DummyDraft()))
 
         mvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(status().is2xxSuccessful)
                 .andExpect(
-                        model().attribute("cubeCards", IsEqual(listOf(DummyCard(""))))
+                        model().attribute("cubeCards", IsEqual(listOf(DummyCard())))
                 )
                 .andExpect(
-                        model().attribute("drafters", IsEqual(listOf(DummyDrafter(""))))
+                        model().attribute("drafters", IsEqual(listOf(DummyDrafter())))
                 )
                 .andExpect(
                         model().attribute("draft", IsEqual(listOf(DummyDraft())))

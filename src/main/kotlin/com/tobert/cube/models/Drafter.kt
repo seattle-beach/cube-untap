@@ -19,15 +19,16 @@ data class Drafter(
         var pickedCards: List<Card> = emptyList(),
 
         @Column(nullable = true)
-        var seat: Int?
+        var seat: Int? = null
 ) {
 
     fun removeCurrentPack(): Pack {
         return this.packs.removeAt(0)
     }
 
-    fun addCardToPicks(card: Card) {
+    fun pickCardFromCurrentPack(card: Card) {
         this.pickedCards = this.pickedCards.plus(card)
+        this.packs.first().removeCard(card)
     }
 
     fun cardFromCurrentPack(cardId: Int): Card? {
@@ -42,5 +43,9 @@ data class Drafter(
             this.packs.isNotEmpty() -> this.packs.first().cards
             else -> return emptyList()
         }
+    }
+
+    fun addPack(pack: Pack) {
+        this.packs.add(pack)
     }
 }

@@ -20,29 +20,29 @@ class DraftService {
     lateinit var drafterService: DrafterService
 
     fun startDraft(cardsPerPack: Int) {
-        draftRepository.save(Draft())
+        val draft = Draft()
 
         val cards = cardService.getAllShuffled().chunked(cardsPerPack)
         val drafters = drafterService.getAllShuffled()
 
-        cards.zip(drafters).forEachIndexed { i, (cards, drafter) ->
+        cards.zip(drafters).forEach { (cards, drafter) ->
             drafter.packs = arrayListOf(Pack(cards = cards.toMutableList()))
-            drafter.seat = i + 1
-            drafterService.save(drafter)
+            draft.drafters = draft.drafters.plus(drafter)
         }
+
+        draftRepository.save(draft)
     }
 
-    fun passDraftersPack(passingDrafter: Drafter, packToPass: Pack) {
+    fun passDraftersPack(passingDrafter: Drafter) {
+        val draft = draftRepository.findAll().first()
 
-        /*
-        val draft = draftRepository.findById(1).get()
+        val numberOfSeats = draft.drafters.size
+        val passingDrafterSeat = draft.drafters.indexOf(passingDrafter)
+        val receivingDrafterSeat = (passingDrafterSeat + 1) % numberOfSeats
 
-        val thisDrafterIndex = draft.drafters.indexOf(drafter)
-        val passToDrafterIndex = (thisDrafterIndex + 1) % draft.drafters.size
+        val packToPass = draft.drafters[passingDrafterSeat].removeCurrentPack()
+        draft.drafters[receivingDrafterSeat].addPack(packToPass)
 
-        draft.drafters[passToDrafterIndex].packs.add(draft.drafters[thisDrafterIndex].currentPack()!!)
-        drafter.packs.removeAt(0)
-
-        draftRepository.save(draft)*/
+        draftRepository.save(draft)
     }
 }

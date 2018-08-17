@@ -22,17 +22,15 @@ class DrafterService(val drafterRepository: DrafterRepository,
 
     fun create(drafterName: String) {
         if (drafterRepository.findByName(drafterName) == null) {
-            drafterRepository.save(Drafter(name = drafterName, seat = null))
+            drafterRepository.save(Drafter(name = drafterName))
         }
     }
 
     fun pickCard(drafter: Drafter, pickedCard: Card) {
-        val pack = drafter.removeCurrentPack()
-        pack.cards.remove(pickedCard)
-        drafter.addCardToPicks(pickedCard)
+        drafter.pickCardFromCurrentPack(pickedCard)
 
         drafterRepository.save(drafter)
 
-        draftService.passDraftersPack(drafter, pack)
+        draftService.passDraftersPack(drafter)
     }
 }
